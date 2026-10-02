@@ -1,0 +1,1062 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open Source, Git & GitHub Mastery Dashboard</title>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              500: '#22c55e',
+              600: '#16a34a',
+              900: '#14532d',
+            },
+            accent: {
+              cyan: '#06b6d4',
+              violet: '#8b5cf6',
+              amber: '#f59e0b'
+            },
+            dark: {
+              bg: '#090d16',
+              card: '#111827',
+              border: '#1f2937',
+              muted: '#374151',
+              hover: '#1e293b'
+            }
+          },
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'Fira Code', 'Consolas', 'monospace']
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Google Fonts & Font Awesome Icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #090d16; }
+    ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #374151; }
+
+    /* Custom animations & effects */
+    .glow-cyan { box-shadow: 0 0 20px -5px rgba(6, 182, 212, 0.3); }
+    .glow-emerald { box-shadow: 0 0 20px -5px rgba(34, 197, 94, 0.3); }
+    .glow-violet { box-shadow: 0 0 20px -5px rgba(139, 92, 246, 0.3); }
+
+    .toast-enter { transform: translateY(100%); opacity: 0; }
+    .toast-show { transform: translateY(0); opacity: 1; }
+
+    /* Slide presentation mode full screen CSS */
+    body.presentation-mode {
+      overflow: hidden;
+    }
+    body.presentation-mode #sidebar,
+    body.presentation-mode #header-actions {
+      display: none !important;
+    }
+    body.presentation-mode #main-content {
+      padding: 0 !important;
+    }
+  </style>
+</head>
+<body class="bg-dark-bg text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-black">
+
+  <!-- TOP NAVIGATION HEADER -->
+  <header class="sticky top-0 z-40 bg-dark-card/90 backdrop-blur-md border-b border-dark-border px-4 lg:px-6 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <button id="mobile-menu-btn" class="lg:hidden text-slate-400 hover:text-white p-2 rounded-lg bg-dark-hover" aria-label="Toggle Navigation">
+        <i class="fa-solid fa-bars text-lg"></i>
+      </button>
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-500 to-accent-cyan flex items-center justify-center text-black font-extrabold text-xl shadow-lg glow-emerald">
+          <i class="fa-brands fa-github text-2xl"></i>
+        </div>
+        <div>
+          <h1 class="font-extrabold text-lg sm:text-xl tracking-tight text-white flex items-center gap-2">
+            Open Source <span class="text-brand-500">&amp;</span> Git Mastery
+          </h1>
+          <p class="text-xs text-slate-400 hidden sm:block">Presenter Workshop Dashboard &amp; Interactive Reference Guide</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Search & Header Actions -->
+    <div class="flex items-center gap-3" id="header-actions">
+      <!-- Quick Search Bar -->
+      <div class="relative hidden md:block w-64">
+        <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
+        <input type="text" id="global-search" placeholder="Search commands or modules..." class="w-full bg-dark-bg border border-dark-border rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500 transition">
+      </div>
+
+      <!-- Presentation Slide Mode Toggle -->
+      <button id="toggle-slide-mode" class="flex items-center gap-2 bg-gradient-to-r from-brand-600 to-emerald-500 hover:from-brand-500 hover:to-emerald-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg text-xs transition shadow-md">
+        <i class="fa-solid fa-expand"></i>
+        <span class="hidden sm:inline">Slide Deck Mode</span>
+      </button>
+
+      <!-- Presenter Badge -->
+      <div class="hidden xl:flex items-center gap-2 bg-dark-hover border border-dark-border px-3 py-1.5 rounded-lg text-xs">
+        <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
+        <span class="text-slate-300 font-medium">Presenter: Saturday Session</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="flex-1 flex overflow-hidden">
+    
+    <!-- SIDEBAR NAVIGATION -->
+    <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-30 w-64 bg-dark-card border-r border-dark-border flex flex-col justify-between transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out">
+      <div class="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-120px)]">
+        <p class="text-[10px] font-bold tracking-wider text-slate-500 uppercase px-3 mb-2">Modules Overview</p>
+        
+        <a href="#overview" class="nav-link active flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-dark-hover hover:text-white transition">
+          <i class="fa-solid fa-chart-pie w-4 text-center text-brand-500"></i>
+          <span>00. Overview &amp; Progress</span>
+        </a>
+
+        <a href="#prerequisites" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-dark-hover hover:text-white transition">
+          <i class="fa-solid fa-sliders w-4 text-center text-accent-cyan"></i>
+          <span>01. Setup &amp; Prerequisites</span>
+        </a>
+
+        <a href="#git-states" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-dark-hover hover:text-white transition">
+          <i class="fa-solid fa-cubes w-4 text-center text-amber-400"></i>
+          <span>02. The 3 Git States</span>
+        </a>
+
+        <a href="#cheat-sheet" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-dark-hover hover:text-white transition">
+          <i class="fa-solid fa-terminal w-4 text-center text-emerald-400"></i>
+          <span>03. Terminal Cheat Sheet</span>
+        </a>
+
+        <a href="#remote-github" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-dark-hover hover:text-white transition">
+          <i class="fa-solid fa-cloud-arrow-up w-4 text-center text-accent-violet"></i>
+          <span>04. Connecting to GitHub</span>
+        </a>
+
+        <a href="#pipeline" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-dark-hover hover:text-white transition">
+          <i class="fa-solid fa-code-branch w-4 text-center text-rose-400"></i>
+          <span>05. Open Source Pipeline</span>
+        </a>
+
+        <a href="#community-rules" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-dark-hover hover:text-white transition">
+          <i class="fa-solid fa-handshake w-4 text-center text-sky-400"></i>
+          <span>06. Issues &amp; Etiquette</span>
+        </a>
+
+        <a href="#sandbox" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-lg text-xs font-semibold text-slate-300 hover:bg-dark-hover hover:text-white transition">
+          <i class="fa-solid fa-laptop-code w-4 text-center text-brand-500"></i>
+          <span>07. Terminal Simulator</span>
+        </a>
+      </div>
+
+      <!-- Workshop Progress Widget -->
+      <div class="p-4 border-t border-dark-border bg-dark-bg/50">
+        <div class="flex items-center justify-between text-xs mb-1.5">
+          <span class="text-slate-400 font-medium">Workshop Mastery</span>
+          <span id="overall-progress-text" class="text-brand-500 font-bold">0%</span>
+        </div>
+        <div class="w-full h-2 bg-dark-border rounded-full overflow-hidden">
+          <div id="overall-progress-bar" class="h-full bg-gradient-to-r from-brand-500 to-accent-cyan w-0 transition-all duration-300"></div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main id="main-content" class="flex-1 overflow-y-auto p-4 lg:p-8 space-y-12">
+
+      <!-- MODULE 00: OVERVIEW & QUICK STATS -->
+      <section id="overview" class="space-y-6">
+        <div class="bg-gradient-to-r from-slate-900 via-dark-card to-slate-900 border border-dark-border rounded-2xl p-6 lg:p-8 relative overflow-hidden shadow-xl">
+          <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
+            <i class="fa-brands fa-git-alt text-[240px] text-brand-500"></i>
+          </div>
+          <div class="relative z-10 max-w-3xl space-y-4">
+            <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-brand-500/10 border border-brand-500/20 text-brand-500 text-xs font-semibold">
+              <i class="fa-solid fa-chalkboard-user"></i> Presentation &amp; Hands-on Guide
+            </div>
+            <h2 class="text-2xl sm:text-4xl font-extrabold text-white tracking-tight">
+              Mastering Open Source, Git &amp; GitHub
+            </h2>
+            <p class="text-slate-400 text-sm sm:text-base leading-relaxed">
+              Welcome to the complete developer roadmap! Learn how version control works locally, connect your projects to GitHub, and make your first authentic Open Source contribution with confidence.
+            </p>
+
+            <div class="pt-2 flex flex-wrap gap-4 text-xs font-medium text-slate-300">
+              <div class="flex items-center gap-2 bg-dark-bg/80 border border-dark-border px-3 py-2 rounded-lg">
+                <i class="fa-solid fa-clock text-accent-cyan"></i>
+                <span>Estimated: 60-90 Mins</span>
+              </div>
+              <div class="flex items-center gap-2 bg-dark-bg/80 border border-dark-border px-3 py-2 rounded-lg">
+                <i class="fa-solid fa-list-check text-brand-500"></i>
+                <span>7 Interactive Modules</span>
+              </div>
+              <div class="flex items-center gap-2 bg-dark-bg/80 border border-dark-border px-3 py-2 rounded-lg">
+                <i class="fa-solid fa-terminal text-amber-400"></i>
+                <span>Built-in Git Simulator</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Jump Cards -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <a href="#prerequisites" class="bg-dark-card hover:bg-dark-hover border border-dark-border p-4 rounded-xl transition group">
+            <div class="flex items-center justify-between mb-2">
+              <i class="fa-solid fa-gears text-lg text-accent-cyan group-hover:scale-110 transition"></i>
+              <span class="text-[10px] bg-dark-border px-2 py-0.5 rounded text-slate-400">Step 1</span>
+            </div>
+            <h3 class="font-bold text-sm text-white group-hover:text-brand-500 transition">Setup &amp; Config</h3>
+            <p class="text-xs text-slate-400 mt-1">Git CLI, SSH keys, identity setup.</p>
+          </a>
+
+          <a href="#git-states" class="bg-dark-card hover:bg-dark-hover border border-dark-border p-4 rounded-xl transition group">
+            <div class="flex items-center justify-between mb-2">
+              <i class="fa-solid fa-diagram-project text-lg text-amber-400 group-hover:scale-110 transition"></i>
+              <span class="text-[10px] bg-dark-border px-2 py-0.5 rounded text-slate-400">Step 2</span>
+            </div>
+            <h3 class="font-bold text-sm text-white group-hover:text-brand-500 transition">The 3 Git States</h3>
+            <p class="text-xs text-slate-400 mt-1">Working Tree, Staging, Local Repo.</p>
+          </a>
+
+          <a href="#pipeline" class="bg-dark-card hover:bg-dark-hover border border-dark-border p-4 rounded-xl transition group">
+            <div class="flex items-center justify-between mb-2">
+              <i class="fa-solid fa-code-pull-request text-lg text-rose-400 group-hover:scale-110 transition"></i>
+              <span class="text-[10px] bg-dark-border px-2 py-0.5 rounded text-slate-400">Step 5</span>
+            </div>
+            <h3 class="font-bold text-sm text-white group-hover:text-brand-500 transition">PR Pipeline</h3>
+            <p class="text-xs text-slate-400 mt-1">Forking, cloning, branching, PRs.</p>
+          </a>
+
+          <a href="#sandbox" class="bg-dark-card hover:bg-dark-hover border border-dark-border p-4 rounded-xl transition group border-brand-500/30">
+            <div class="flex items-center justify-between mb-2">
+              <i class="fa-solid fa-terminal text-lg text-brand-500 group-hover:scale-110 transition"></i>
+              <span class="text-[10px] bg-brand-500/20 text-brand-400 px-2 py-0.5 rounded font-bold">Interactive</span>
+            </div>
+            <h3 class="font-bold text-sm text-white group-hover:text-brand-500 transition">Git Simulator</h3>
+            <p class="text-xs text-slate-400 mt-1">Test real CLI commands live.</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- MODULE 01: PREREQUISITES & SETUP -->
+      <section id="prerequisites" class="space-y-6 pt-6 border-t border-dark-border">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-accent-cyan uppercase tracking-wider">Module 01</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-sliders text-accent-cyan"></i> Environment Setup &amp; Configuration
+            </h2>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer bg-dark-card border border-dark-border px-3 py-1.5 rounded-lg text-xs text-slate-300">
+            <input type="checkbox" data-task="setup" class="module-checkbox rounded bg-dark-bg border-dark-border text-brand-500 focus:ring-brand-500">
+            <span>Mark Completed</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <!-- OS Git Installation -->
+          <div class="bg-dark-card border border-dark-border rounded-xl p-5 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-accent-cyan/10 text-accent-cyan flex items-center justify-center font-bold">1</div>
+              <h3 class="font-bold text-white text-sm">Install Git CLI</h3>
+            </div>
+            
+            <div class="space-y-3">
+              <!-- Windows -->
+              <div class="bg-dark-bg p-3 rounded-lg border border-dark-border text-xs">
+                <div class="flex items-center justify-between text-slate-400 mb-1">
+                  <span class="font-semibold text-slate-300"><i class="fa-brands fa-windows text-blue-400 mr-1"></i> Windows</span>
+                  <button class="copy-btn text-slate-500 hover:text-white" data-copy="winget install --id Git.Git -e --source winget"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                <code class="font-mono text-emerald-400 block break-all">winget install --id Git.Git -e --source winget</code>
+              </div>
+
+              <!-- macOS -->
+              <div class="bg-dark-bg p-3 rounded-lg border border-dark-border text-xs">
+                <div class="flex items-center justify-between text-slate-400 mb-1">
+                  <span class="font-semibold text-slate-300"><i class="fa-brands fa-apple text-slate-200 mr-1"></i> macOS</span>
+                  <button class="copy-btn text-slate-500 hover:text-white" data-copy="brew install git"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                <code class="font-mono text-emerald-400 block">brew install git</code>
+              </div>
+
+              <!-- Linux -->
+              <div class="bg-dark-bg p-3 rounded-lg border border-dark-border text-xs">
+                <div class="flex items-center justify-between text-slate-400 mb-1">
+                  <span class="font-semibold text-slate-300"><i class="fa-brands fa-linux text-amber-400 mr-1"></i> Linux (Debian/Ubuntu)</span>
+                  <button class="copy-btn text-slate-500 hover:text-white" data-copy="sudo apt update && sudo apt install git -y"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                <code class="font-mono text-emerald-400 block break-all">sudo apt update &amp;&amp; sudo apt install git -y</code>
+              </div>
+            </div>
+          </div>
+
+          <!-- GitHub Profile & Authentication -->
+          <div class="bg-dark-card border border-dark-border rounded-xl p-5 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-accent-violet/10 text-accent-violet flex items-center justify-center font-bold">2</div>
+              <h3 class="font-bold text-white text-sm">GitHub Account &amp; Auth</h3>
+            </div>
+            
+            <ul class="space-y-3 text-xs text-slate-300">
+              <li class="flex items-start gap-2 bg-dark-bg p-3 rounded-lg border border-dark-border">
+                <i class="fa-solid fa-circle-check text-brand-500 mt-0.5"></i>
+                <div>
+                  <strong>Create Account:</strong> Sign up at <a href="https://github.com" target="_blank" class="text-accent-cyan underline">github.com</a> with a professional username.
+                </div>
+              </li>
+              <li class="flex items-start gap-2 bg-dark-bg p-3 rounded-lg border border-dark-border">
+                <i class="fa-solid fa-key text-amber-400 mt-0.5"></i>
+                <div>
+                  <strong>SSH Key / PAT:</strong> Set up an SSH Key or Personal Access Token in <em>Settings &gt; Developer Settings</em> for seamless authentication.
+                </div>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Configure Identity -->
+          <div class="bg-dark-card border border-dark-border rounded-xl p-5 space-y-4">
+            <div class="flex items-center gap-3">
+              <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-500 flex items-center justify-center font-bold">3</div>
+              <h3 class="font-bold text-white text-sm">Configure Git Identity</h3>
+            </div>
+            <p class="text-xs text-slate-400">Tell Git who you are before committing code locally:</p>
+
+            <div class="space-y-2 bg-dark-bg p-3 rounded-lg border border-dark-border font-mono text-xs">
+              <div class="flex items-center justify-between">
+                <span class="text-slate-500"># Set global user name</span>
+                <button class="copy-btn text-slate-500 hover:text-white" data-copy="git config --global user.name &quot;Your Full Name&quot;"><i class="fa-regular fa-copy"></i></button>
+              </div>
+              <code class="text-brand-400 block break-all">git config --global user.name "Your Name"</code>
+
+              <div class="flex items-center justify-between pt-2">
+                <span class="text-slate-500"># Set global user email</span>
+                <button class="copy-btn text-slate-500 hover:text-white" data-copy="git config --global user.email &quot;your@email.com&quot;"><i class="fa-regular fa-copy"></i></button>
+              </div>
+              <code class="text-brand-400 block break-all">git config --global user.email "your@email.com"</code>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 02: THE 3 STATES OF GIT VISUALIZER -->
+      <section id="git-states" class="space-y-6 pt-6 border-t border-dark-border">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-amber-400 uppercase tracking-wider">Module 02</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-cubes text-amber-400"></i> The 3 Local States of Git
+            </h2>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer bg-dark-card border border-dark-border px-3 py-1.5 rounded-lg text-xs text-slate-300">
+            <input type="checkbox" data-task="git-states" class="module-checkbox rounded bg-dark-bg border-dark-border text-brand-500 focus:ring-brand-500">
+            <span>Mark Completed</span>
+          </label>
+        </div>
+
+        <p class="text-sm text-slate-400 max-w-3xl">
+          Git maintains three main sections locally. Use the visualizer below to see how files transition through staging to saved snapshot commits.
+        </p>
+
+        <!-- Interactive Visualizer Widget -->
+        <div class="bg-dark-card border border-dark-border rounded-2xl p-6 space-y-6">
+          <!-- Visual Pipeline Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+            <!-- Working Directory -->
+            <div id="state-working" class="bg-dark-bg border-2 border-slate-700 rounded-xl p-5 space-y-3 transition-all duration-300">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold px-2.5 py-1 rounded bg-slate-800 text-slate-300">1. Working Tree</span>
+                <i class="fa-solid fa-folder-open text-slate-400"></i>
+              </div>
+              <h3 class="font-bold text-white text-sm">Working Directory</h3>
+              <p class="text-xs text-slate-400">Untracked or modified files on disk in your editor.</p>
+
+              <div class="space-y-2 pt-2" id="working-file-list">
+                <div class="file-item bg-dark-card border border-rose-500/40 p-2.5 rounded-lg flex items-center justify-between text-xs">
+                  <span class="font-mono text-rose-400"><i class="fa-regular fa-file-code mr-1.5"></i> index.html</span>
+                  <span class="text-[10px] bg-rose-500/10 text-rose-400 px-1.5 py-0.5 rounded">modified</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Staging Area -->
+            <div id="state-staging" class="bg-dark-bg border-2 border-slate-700 rounded-xl p-5 space-y-3 transition-all duration-300">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold px-2.5 py-1 rounded bg-amber-500/10 text-amber-400">2. Staging (Index)</span>
+                <i class="fa-solid fa-layer-group text-amber-400"></i>
+              </div>
+              <h3 class="font-bold text-white text-sm">Staging Area</h3>
+              <p class="text-xs text-slate-400">Prepared snapshot buffer waiting to be committed.</p>
+
+              <div class="space-y-2 pt-2 min-h-[50px]" id="staging-file-list">
+                <p class="text-xs text-slate-600 italic text-center py-2" id="staging-empty">No files staged yet</p>
+              </div>
+            </div>
+
+            <!-- Local Repository -->
+            <div id="state-repo" class="bg-dark-bg border-2 border-slate-700 rounded-xl p-5 space-y-3 transition-all duration-300">
+              <div class="flex items-center justify-between">
+                <span class="text-xs font-bold px-2.5 py-1 rounded bg-brand-500/10 text-brand-400">3. Local .git Repo</span>
+                <i class="fa-solid fa-database text-brand-500"></i>
+              </div>
+              <h3 class="font-bold text-white text-sm">Committed History</h3>
+              <p class="text-xs text-slate-400">Permanent snapshots stored safely in `.git` folder.</p>
+
+              <div class="space-y-2 pt-2 min-h-[50px]" id="repo-commit-list">
+                <p class="text-xs text-slate-600 italic text-center py-2" id="repo-empty">No new commits made</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Controls for Visualizer -->
+          <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-dark-border">
+            <div class="flex items-center gap-3">
+              <button id="btn-add-file" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold px-4 py-2 rounded-lg transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-right"></i> Run <code class="font-mono">git add .</code>
+              </button>
+              <button id="btn-commit-file" class="bg-brand-500/20 hover:bg-brand-500/30 text-brand-300 border border-brand-500/40 text-xs font-bold px-4 py-2 rounded-lg transition flex items-center gap-2 disabled:opacity-50" disabled>
+                <i class="fa-solid fa-check"></i> Run <code class="font-mono">git commit -m "..."</code>
+              </button>
+            </div>
+
+            <button id="btn-reset-visualizer" class="text-xs text-slate-400 hover:text-white transition underline">
+              Reset Demo Visualizer
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 03: CORE TERMINAL CHEAT SHEET -->
+      <section id="cheat-sheet" class="space-y-6 pt-6 border-t border-dark-border">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Module 03</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-emerald-400"></i> Local CLI Command Cheat Sheet
+            </h2>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer bg-dark-card border border-dark-border px-3 py-1.5 rounded-lg text-xs text-slate-300">
+            <input type="checkbox" data-task="cheat-sheet" class="module-checkbox rounded bg-dark-bg border-dark-border text-brand-500 focus:ring-brand-500">
+            <span>Mark Completed</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          <!-- Command Card 1 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-brand-400 font-mono">git init</span>
+              <button class="copy-btn text-slate-500 hover:text-white text-xs" data-copy="git init"><i class="fa-regular fa-copy"></i></button>
+            </div>
+            <p class="text-xs text-slate-300 font-semibold">Initialize Repository</p>
+            <p class="text-xs text-slate-400">Creates a new blank `.git` tracking directory in the current folder.</p>
+          </div>
+
+          <!-- Command Card 2 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-brand-400 font-mono">git status</span>
+              <button class="copy-btn text-slate-500 hover:text-white text-xs" data-copy="git status"><i class="fa-regular fa-copy"></i></button>
+            </div>
+            <p class="text-xs text-slate-300 font-semibold">Check Working Tree State</p>
+            <p class="text-xs text-slate-400">Displays untracked, modified, or staged files awaiting commit.</p>
+          </div>
+
+          <!-- Command Card 3 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-brand-400 font-mono">git add .</span>
+              <button class="copy-btn text-slate-500 hover:text-white text-xs" data-copy="git add ."><i class="fa-regular fa-copy"></i></button>
+            </div>
+            <p class="text-xs text-slate-300 font-semibold">Stage All Files</p>
+            <p class="text-xs text-slate-400">Adds all current folder changes to the Staging area buffer.</p>
+          </div>
+
+          <!-- Command Card 4 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-brand-400 font-mono">git commit -m "..."</span>
+              <button class="copy-btn text-slate-500 hover:text-white text-xs" data-copy="git commit -m &quot;feat: initial commit&quot;"><i class="fa-regular fa-copy"></i></button>
+            </div>
+            <p class="text-xs text-slate-300 font-semibold">Commit Snapshot</p>
+            <p class="text-xs text-slate-400">Saves staged changes permanently into local history with a message.</p>
+          </div>
+
+          <!-- Command Card 5 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-brand-400 font-mono">git log --oneline</span>
+              <button class="copy-btn text-slate-500 hover:text-white text-xs" data-copy="git log --oneline"><i class="fa-regular fa-copy"></i></button>
+            </div>
+            <p class="text-xs text-slate-300 font-semibold">Compact Log History</p>
+            <p class="text-xs text-slate-400">Shows commit history in clean single lines with hash IDs.</p>
+          </div>
+
+          <!-- Command Card 6 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-brand-400 font-mono">git checkout -b &lt;name&gt;</span>
+              <button class="copy-btn text-slate-500 hover:text-white text-xs" data-copy="git checkout -b feature/login-page"><i class="fa-regular fa-copy"></i></button>
+            </div>
+            <p class="text-xs text-slate-300 font-semibold">Create &amp; Switch Branch</p>
+            <p class="text-xs text-slate-400">Creates a new isolated branch and switches your workspace to it immediately.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 04: CONNECTING TO GITHUB -->
+      <section id="remote-github" class="space-y-6 pt-6 border-t border-dark-border">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-accent-violet uppercase tracking-wider">Module 04</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-cloud-arrow-up text-accent-violet"></i> Linking Local Git to GitHub.com
+            </h2>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer bg-dark-card border border-dark-border px-3 py-1.5 rounded-lg text-xs text-slate-300">
+            <input type="checkbox" data-task="remote-github" class="module-checkbox rounded bg-dark-bg border-dark-border text-brand-500 focus:ring-brand-500">
+            <span>Mark Completed</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <div class="bg-dark-card border border-dark-border p-6 rounded-2xl space-y-4">
+            <h3 class="font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-brands fa-github text-accent-violet text-xl"></i> 1. On GitHub.com Web UI
+            </h3>
+            <ol class="space-y-3 text-xs text-slate-300 list-decimal list-inside">
+              <li class="leading-relaxed">Click the <strong class="text-white">+</strong> icon in the top right header and select <strong class="text-white">New repository</strong>.</li>
+              <li class="leading-relaxed">Provide a clear repo name (e.g., <code class="bg-dark-bg px-1.5 py-0.5 rounded text-brand-400 font-mono">my-awesome-project</code>).</li>
+              <li class="leading-relaxed"><strong class="text-amber-400">Important:</strong> Leave "Add a README file" unchecked if pushing an existing local project.</li>
+              <li class="leading-relaxed">Click <strong class="text-white">Create repository</strong> and copy the HTTPS/SSH URL provided.</li>
+            </ol>
+          </div>
+
+          <div class="bg-dark-card border border-dark-border p-6 rounded-2xl space-y-4">
+            <h3 class="font-bold text-white text-base flex items-center gap-2">
+              <i class="fa-solid fa-terminal text-emerald-400 text-xl"></i> 2. Terminal Link Commands
+            </h3>
+            
+            <div class="space-y-3 bg-dark-bg p-4 rounded-xl border border-dark-border font-mono text-xs">
+              <div>
+                <div class="flex items-center justify-between text-slate-500 mb-1">
+                  <span># 1. Add remote tracking URL</span>
+                  <button class="copy-btn text-slate-500 hover:text-white" data-copy="git remote add origin https://github.com/username/repo.git"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                <code class="text-brand-400 block break-all">git remote add origin &lt;REMOTE_URL&gt;</code>
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between text-slate-500 mb-1">
+                  <span># 2. Rename default branch to main</span>
+                  <button class="copy-btn text-slate-500 hover:text-white" data-copy="git branch -M main"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                <code class="text-brand-400 block">git branch -M main</code>
+              </div>
+
+              <div>
+                <div class="flex items-center justify-between text-slate-500 mb-1">
+                  <span># 3. Push and set upstream tracking</span>
+                  <button class="copy-btn text-slate-500 hover:text-white" data-copy="git push -u origin main"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                <code class="text-brand-400 block">git push -u origin main</code>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 05: OPEN SOURCE CONTRIBUTION PIPELINE -->
+      <section id="pipeline" class="space-y-6 pt-6 border-t border-dark-border">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-rose-400 uppercase tracking-wider">Module 05</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-code-branch text-rose-400"></i> The 5-Step Open Source Pipeline
+            </h2>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer bg-dark-card border border-dark-border px-3 py-1.5 rounded-lg text-xs text-slate-300">
+            <input type="checkbox" data-task="pipeline" class="module-checkbox rounded bg-dark-bg border-dark-border text-brand-500 focus:ring-brand-500">
+            <span>Mark Completed</span>
+          </label>
+        </div>
+
+        <!-- Stepper Cards Pipeline -->
+        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <!-- Step 1 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2 relative">
+            <div class="w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center text-xs">1</div>
+            <h3 class="font-bold text-white text-sm">Fork Repo</h3>
+            <p class="text-xs text-slate-400">Click <strong>Fork</strong> on GitHub to copy the project under your own account.</p>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
+            <div class="w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center text-xs">2</div>
+            <h3 class="font-bold text-white text-sm">Clone Local</h3>
+            <p class="text-xs text-slate-400">Download your fork to your computer:</p>
+            <code class="text-[11px] font-mono text-brand-400 block bg-dark-bg p-1 rounded">git clone &lt;fork-url&gt;</code>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
+            <div class="w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center text-xs">3</div>
+            <h3 class="font-bold text-white text-sm">Branch Out</h3>
+            <p class="text-xs text-slate-400">Never work on main! Create a branch:</p>
+            <code class="text-[11px] font-mono text-brand-400 block bg-dark-bg p-1 rounded">git checkout -b feat/xyz</code>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
+            <div class="w-7 h-7 rounded-full bg-rose-500/20 text-rose-400 font-bold flex items-center justify-center text-xs">4</div>
+            <h3 class="font-bold text-white text-sm">Push Feature</h3>
+            <p class="text-xs text-slate-400">Push changes to your fork:</p>
+            <code class="text-[11px] font-mono text-brand-400 block bg-dark-bg p-1 rounded">git push origin feat/xyz</code>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="bg-dark-card border border-brand-500/40 p-4 rounded-xl space-y-2 bg-brand-500/5">
+            <div class="w-7 h-7 rounded-full bg-brand-500 text-black font-extrabold flex items-center justify-center text-xs">5</div>
+            <h3 class="font-bold text-white text-sm">Open PR</h3>
+            <p class="text-xs text-slate-400">Go to original repo, click <strong>Compare &amp; Pull Request</strong>. Write PR description!</p>
+          </div>
+        </div>
+
+        <!-- Pull Request Best Practices Callout -->
+        <div class="bg-dark-card border border-dark-border rounded-xl p-5 space-y-3">
+          <h3 class="font-bold text-white text-sm flex items-center gap-2">
+            <i class="fa-solid fa-lightbulb text-amber-400"></i> Pro PR Tip: Linking GitHub Issues
+          </h3>
+          <p class="text-xs text-slate-300 leading-relaxed">
+            When writing your Pull Request description on GitHub, include issue keywords like <code class="bg-dark-bg px-1.5 py-0.5 rounded text-amber-400 font-mono">Fixes #42</code> or <code class="bg-dark-bg px-1.5 py-0.5 rounded text-amber-400 font-mono">Closes #108</code>. When maintainers merge your PR, GitHub will automatically close the referenced issue!
+          </p>
+        </div>
+      </section>
+
+      <!-- MODULE 06: FINDING ISSUES & ETIQUETTE -->
+      <section id="community-rules" class="space-y-6 pt-6 border-t border-dark-border">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-sky-400 uppercase tracking-wider">Module 06</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-handshake text-sky-400"></i> Finding Issues &amp; Community Etiquette
+            </h2>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer bg-dark-card border border-dark-border px-3 py-1.5 rounded-lg text-xs text-slate-300">
+            <input type="checkbox" data-task="community-rules" class="module-checkbox rounded bg-dark-bg border-dark-border text-brand-500 focus:ring-brand-500">
+            <span>Mark Completed</span>
+          </label>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div class="bg-dark-card border border-dark-border p-5 rounded-xl space-y-3">
+            <div class="w-8 h-8 rounded-lg bg-sky-500/10 text-sky-400 flex items-center justify-center font-bold"><i class="fa-solid fa-tag"></i></div>
+            <h3 class="font-bold text-white text-sm">Beginner Issue Tags</h3>
+            <p class="text-xs text-slate-400">Search GitHub Issues using these filters:</p>
+            <div class="flex flex-wrap gap-2 text-[11px] font-mono">
+              <span class="bg-emerald-500/10 text-emerald-400 border border-emerald-500/30 px-2 py-1 rounded">good first issue</span>
+              <span class="bg-sky-500/10 text-sky-400 border border-sky-500/30 px-2 py-1 rounded">help wanted</span>
+              <span class="bg-amber-500/10 text-amber-400 border border-amber-500/30 px-2 py-1 rounded">documentation</span>
+            </div>
+          </div>
+
+          <div class="bg-dark-card border border-dark-border p-5 rounded-xl space-y-3">
+            <div class="w-8 h-8 rounded-lg bg-amber-500/10 text-amber-400 flex items-center justify-center font-bold"><i class="fa-solid fa-book-open"></i></div>
+            <h3 class="font-bold text-white text-sm">Read CONTRIBUTING.md</h3>
+            <p class="text-xs text-slate-400">Every project has code guidelines, testing specs, and branch conventions in its <code class="text-slate-200 font-mono">CONTRIBUTING.md</code> file. Always read it first!</p>
+          </div>
+
+          <div class="bg-dark-card border border-dark-border p-5 rounded-xl space-y-3">
+            <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-400 flex items-center justify-center font-bold"><i class="fa-solid fa-comments"></i></div>
+            <h3 class="font-bold text-white text-sm">Ask Before Working</h3>
+            <p class="text-xs text-slate-400">Avoid duplicate work! Comment on an issue requesting assignment before coding:</p>
+            <p class="text-xs italic text-slate-300 bg-dark-bg p-2 rounded border border-dark-border">"Hi maintainers! I'd like to work on this issue. Please assign it to me."</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MODULE 07: INTERACTIVE TERMINAL SIMULATOR -->
+      <section id="sandbox" class="space-y-6 pt-6 border-t border-dark-border pb-12">
+        <div class="flex items-center justify-between">
+          <div>
+            <span class="text-xs font-bold text-brand-500 uppercase tracking-wider">Module 07</span>
+            <h2 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2">
+              <i class="fa-solid fa-laptop-code text-brand-500"></i> Interactive Git Terminal Simulator
+            </h2>
+          </div>
+          <label class="flex items-center gap-2 cursor-pointer bg-dark-card border border-dark-border px-3 py-1.5 rounded-lg text-xs text-slate-300">
+            <input type="checkbox" data-task="sandbox" class="module-checkbox rounded bg-dark-bg border-dark-border text-brand-500 focus:ring-brand-500">
+            <span>Mark Completed</span>
+          </label>
+        </div>
+
+        <p class="text-sm text-slate-400">
+          Practice typing live Git commands below! Try typing <code class="text-brand-400 font-mono">git init</code>, <code class="text-brand-400 font-mono">git status</code>, <code class="text-brand-400 font-mono">git add .</code>, <code class="text-brand-400 font-mono">git commit -m "feat: my change"</code>, or <code class="text-brand-400 font-mono">help</code>.
+        </p>
+
+        <!-- Terminal Window Mockup -->
+        <div class="bg-dark-bg border border-dark-border rounded-2xl overflow-hidden shadow-2xl font-mono text-xs">
+          <!-- Window Header -->
+          <div class="bg-dark-card px-4 py-3 border-b border-dark-border flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-rose-500"></div>
+              <div class="w-3 h-3 rounded-full bg-amber-500"></div>
+              <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+              <span class="text-slate-400 text-[11px] ml-2">bash - dev@workshop-laptop: ~/my-open-source-project</span>
+            </div>
+            <button id="clear-terminal" class="text-slate-500 hover:text-white text-xs"><i class="fa-solid fa-trash-can mr-1"></i> Clear</button>
+          </div>
+
+          <!-- Terminal Screen Body -->
+          <div id="terminal-body" class="p-4 h-64 overflow-y-auto space-y-2 text-slate-300 leading-relaxed">
+            <div class="text-slate-500">Welcome to Git Terminal Simulator v1.0.0</div>
+            <div class="text-slate-500">Type <span class="text-brand-400">help</span> to view available commands.</div>
+          </div>
+
+          <!-- Terminal Input Prompt -->
+          <form id="terminal-form" class="bg-dark-card/50 border-t border-dark-border px-4 py-2.5 flex items-center gap-2">
+            <span class="text-brand-500 font-bold">$</span>
+            <input type="text" id="terminal-input" placeholder="Type git command here..." autocomplete="off" class="flex-1 bg-transparent text-slate-100 focus:outline-none font-mono text-xs">
+            <button type="submit" class="bg-brand-500 text-black font-bold px-3 py-1 rounded hover:bg-brand-400 transition text-[11px]">Run</button>
+          </form>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- TOAST NOTIFICATION CONTAINER -->
+  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      
+      // --- STATE MANAGERS & LOCALSTORAGE ---
+      const TASKS_KEY = 'git_workshop_tasks';
+      let taskState = JSON.parse(localStorage.getItem(TASKS_KEY)) || {};
+
+      // Initialize Checkboxes State
+      const updateProgress = () => {
+        const checkboxes = document.querySelectorAll('.module-checkbox');
+        let checkedCount = 0;
+        
+        checkboxes.forEach(cb => {
+          const taskId = cb.getAttribute('data-task');
+          if (taskState[taskId]) {
+            cb.checked = true;
+            checkedCount++;
+          } else {
+            cb.checked = false;
+          }
+        });
+
+        const percent = Math.round((checkedCount / checkboxes.length) * 100) || 0;
+        document.getElementById('overall-progress-text').textContent = `${percent}%`;
+        document.getElementById('overall-progress-bar').style.width = `${percent}%`;
+      };
+
+      document.querySelectorAll('.module-checkbox').forEach(cb => {
+        cb.addEventListener('change', (e) => {
+          const taskId = e.target.getAttribute('data-task');
+          taskState[taskId] = e.target.checked;
+          localStorage.setItem(TASKS_KEY, JSON.stringify(taskState));
+          updateProgress();
+          showToast(e.target.checked ? 'Module marked as completed!' : 'Module progress updated.');
+        });
+      });
+
+      updateProgress();
+
+      // --- TOAST MESSAGING ---
+      function showToast(message) {
+        const container = document.getElementById('toast-container');
+        const toast = document.createElement('div');
+        toast.className = 'toast-enter bg-dark-card border border-brand-500/40 text-slate-100 text-xs px-4 py-2.5 rounded-xl shadow-xl flex items-center gap-2 pointer-events-auto transition-all duration-300';
+        toast.innerHTML = `<i class="fa-solid fa-circle-check text-brand-500"></i> <span>${message}</span>`;
+        container.appendChild(toast);
+
+        setTimeout(() => toast.classList.add('toast-show'), 10);
+        setTimeout(() => {
+          toast.classList.remove('toast-show');
+          setTimeout(() => toast.remove(), 300);
+        }, 2500);
+      }
+
+      // --- CLIPBOARD COPY FUNCTIONALITY ---
+      document.querySelectorAll('.copy-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const textToCopy = btn.getAttribute('data-copy');
+          
+          // Fallback execCommand for iframe safety
+          const tempTextArea = document.createElement('textarea');
+          tempTextArea.value = textToCopy;
+          document.body.appendChild(tempTextArea);
+          tempTextArea.select();
+          document.execCommand('copy');
+          document.body.removeChild(tempTextArea);
+
+          showToast('Copied command to clipboard!');
+        });
+      });
+
+      // --- MOBILE SIDEBAR TOGGLE ---
+      const mobileBtn = document.getElementById('mobile-menu-btn');
+      const sidebar = document.getElementById('sidebar');
+
+      mobileBtn.addEventListener('click', () => {
+        sidebar.classList.toggle('-translate-x-full');
+      });
+
+      // Close sidebar on link click (mobile)
+      document.querySelectorAll('.nav-link').forEach(link => {
+        link.addEventListener('click', () => {
+          if (window.innerWidth < 1024) {
+            sidebar.classList.add('-translate-x-full');
+          }
+        });
+      });
+
+      // --- PRESENTATION / SLIDE DECK MODE ---
+      const slideBtn = document.getElementById('toggle-slide-mode');
+      let isSlideMode = false;
+
+      slideBtn.addEventListener('click', () => {
+        isSlideMode = !isSlideMode;
+        if (isSlideMode) {
+          document.body.classList.add('presentation-mode');
+          slideBtn.innerHTML = `<i class="fa-solid fa-compress"></i> <span class="hidden sm:inline">Exit Slide Mode</span>`;
+          showToast('Switched to Fullscreen Presentation Mode!');
+        } else {
+          document.body.classList.remove('presentation-mode');
+          slideBtn.innerHTML = `<i class="fa-solid fa-expand"></i> <span class="hidden sm:inline">Slide Deck Mode</span>`;
+        }
+      });
+
+      // --- MODULE 02: VISUALIZER DEMO LOGIC ---
+      let visualizerState = 'working'; // 'working', 'staged', 'committed'
+      const btnAdd = document.getElementById('btn-add-file');
+      const btnCommit = document.getElementById('btn-commit-file');
+      const btnReset = document.getElementById('btn-reset-visualizer');
+
+      const stagingList = document.getElementById('staging-file-list');
+      const repoList = document.getElementById('repo-commit-list');
+      const stagingEmpty = document.getElementById('staging-empty');
+      const repoEmpty = document.getElementById('repo-empty');
+
+      btnAdd.addEventListener('click', () => {
+        if (visualizerState === 'working') {
+          visualizerState = 'staged';
+          stagingEmpty.style.display = 'none';
+          stagingList.innerHTML += `
+            <div id="staged-file" class="bg-dark-card border border-amber-500/40 p-2.5 rounded-lg flex items-center justify-between text-xs animate-pulse">
+              <span class="font-mono text-amber-400"><i class="fa-regular fa-file-code mr-1.5"></i> index.html</span>
+              <span class="text-[10px] bg-amber-500/10 text-amber-400 px-1.5 py-0.5 rounded">staged</span>
+            </div>
+          `;
+          btnAdd.disabled = true;
+          btnAdd.classList.add('opacity-50');
+          btnCommit.disabled = false;
+          btnCommit.classList.remove('opacity-50');
+          showToast('Ran `git add .` - File staged!');
+        }
+      });
+
+      btnCommit.addEventListener('click', () => {
+        if (visualizerState === 'staged') {
+          visualizerState = 'committed';
+          const stagedFile = document.getElementById('staged-file');
+          if (stagedFile) stagedFile.remove();
+          stagingEmpty.style.display = 'block';
+
+          repoEmpty.style.display = 'none';
+          repoList.innerHTML += `
+            <div class="bg-dark-card border border-brand-500/40 p-2.5 rounded-lg space-y-1 text-xs">
+              <div class="flex items-center justify-between font-mono text-[11px]">
+                <span class="text-brand-400">commit a1b2c3d</span>
+                <span class="text-slate-500">HEAD -&gt; main</span>
+              </div>
+              <p class="text-slate-300 font-sans text-xs">feat: add index webpage</p>
+            </div>
+          `;
+
+          btnCommit.disabled = true;
+          btnCommit.classList.add('opacity-50');
+          showToast('Ran `git commit` - Snapshot saved to local repo!');
+        }
+      });
+
+      btnReset.addEventListener('click', () => {
+        visualizerState = 'working';
+        stagingList.innerHTML = '<p class="text-xs text-slate-600 italic text-center py-2" id="staging-empty">No files staged yet</p>';
+        repoList.innerHTML = '<p class="text-xs text-slate-600 italic text-center py-2" id="repo-empty">No new commits made</p>';
+        btnAdd.disabled = false;
+        btnAdd.classList.remove('opacity-50');
+        btnCommit.disabled = true;
+        btnCommit.classList.add('opacity-50');
+        showToast('Reset Demo Visualizer.');
+      });
+
+      // --- MODULE 07: INTERACTIVE TERMINAL SIMULATOR LOGIC ---
+      const terminalForm = document.getElementById('terminal-form');
+      const terminalInput = document.getElementById('terminal-input');
+      const terminalBody = document.getElementById('terminal-body');
+      const clearBtn = document.getElementById('clear-terminal');
+
+      let simState = {
+        isInitialized: false,
+        hasChanges: true,
+        staged: false,
+        commits: []
+      };
+
+      const appendTerminalLine = (text, type = 'output') => {
+        const line = document.createElement('div');
+        if (type === 'cmd') {
+          line.className = 'text-slate-100 font-bold';
+          line.innerHTML = `<span class="text-brand-500">$</span> ${text}`;
+        } else if (type === 'error') {
+          line.className = 'text-rose-400';
+          line.textContent = text;
+        } else if (type === 'success') {
+          line.className = 'text-brand-400';
+          line.textContent = text;
+        } else {
+          line.className = 'text-slate-300 whitespace-pre-wrap';
+          line.textContent = text;
+        }
+        terminalBody.appendChild(line);
+        terminalBody.scrollTop = terminalBody.scrollHeight;
+      };
+
+      terminalForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const cmd = terminalInput.value.trim();
+        if (!cmd) return;
+
+        appendTerminalLine(cmd, 'cmd');
+        terminalInput.value = '';
+
+        const lower = cmd.toLowerCase();
+
+        if (lower === 'clear') {
+          terminalBody.innerHTML = '';
+          return;
+        }
+
+        if (lower === 'help') {
+          appendTerminalLine(
+            "Available Commands:\n" +
+            "  git init                Initialize local repository\n" +
+            "  git status              Check staged/modified files\n" +
+            "  git add .               Stage modified files\n" +
+            "  git commit -m \"msg\"     Save snapshot commit\n" +
+            "  git log                 View commit logs\n" +
+            "  clear                   Clear terminal window"
+          );
+          return;
+        }
+
+        if (lower === 'git init') {
+          if (simState.isInitialized) {
+            appendTerminalLine("Reinitialized existing Git repository in /home/dev/my-open-source-project/.git/", 'output');
+          } else {
+            simState.isInitialized = true;
+            appendTerminalLine("Initialized empty Git repository in /home/dev/my-open-source-project/.git/", 'success');
+          }
+          return;
+        }
+
+        if (!simState.isInitialized) {
+          appendTerminalLine("fatal: not a git repository (or any of the parent directories): .git", 'error');
+          return;
+        }
+
+        if (lower === 'git status') {
+          if (!simState.hasChanges) {
+            appendTerminalLine("On branch main\nnothing to commit, working tree clean", 'output');
+          } else if (simState.staged) {
+            appendTerminalLine("On branch main\nChanges to be committed:\n  (use \"git restore --staged <file>...\" to unstage)\n\tmodified:   index.html", 'success');
+          } else {
+            appendTerminalLine("On branch main\nChanges not staged for commit:\n  (use \"git add <file>...\" to update what will be committed)\n\tmodified:   index.html", 'error');
+          }
+          return;
+        }
+
+        if (lower === 'git add .' || lower === 'git add index.html') {
+          if (!simState.hasChanges) {
+            appendTerminalLine("Nothing modified to stage.", 'output');
+          } else {
+            simState.staged = true;
+            appendTerminalLine("Staged 1 file (index.html)", 'success');
+          }
+          return;
+        }
+
+        if (lower.startsWith('git commit')) {
+          if (!simState.staged) {
+            appendTerminalLine("no changes added to commit (use \"git add\" and/or \"git commit -a\")", 'error');
+          } else {
+            const hash = Math.random().toString(16).substring(2, 9);
+            simState.staged = false;
+            simState.hasChanges = false;
+            simState.commits.push(hash);
+            appendTerminalLine(`[main ${hash}] ${cmd.replace(/git commit -m/i, '').replace(/["']/g, '') || 'commit update'}\n 1 file changed, 12 insertions(+)`, 'success');
+          }
+          return;
+        }
+
+        if (lower === 'git log' || lower === 'git log --oneline') {
+          if (simState.commits.length === 0) {
+            appendTerminalLine("fatal: your current branch 'main' does not have any commits yet", 'error');
+          } else {
+            simState.commits.forEach(c => {
+              appendTerminalLine(`${c} (HEAD -> main) update project files`, 'output');
+            });
+          }
+          return;
+        }
+
+        appendTerminalLine(`git: '${cmd.replace('git ', '')}' is not a valid git command. Type 'help' for guidance.`, 'error');
+      });
+
+      clearBtn.addEventListener('click', () => {
+        terminalBody.innerHTML = '';
+      });
+
+      // --- GLOBAL SEARCH FILTERING ---
+      const searchInput = document.getElementById('global-search');
+      searchInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase();
+        const cards = document.querySelectorAll('#main-content section');
+
+        cards.forEach(sec => {
+          if (sec.textContent.toLowerCase().includes(query)) {
+            sec.style.display = 'block';
+          } else {
+            sec.style.display = 'none';
+          }
+        });
+      });
+
+    });
+  </script>
+</body>
+</html>
