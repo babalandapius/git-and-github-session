@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Open Source, Git & GitHub Mastery Dashboard</title>
 
-  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
@@ -42,20 +41,17 @@
     }
   </script>
 
-  <!-- Google Fonts & Font Awesome Icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
   <style>
-    /* Custom scrollbar */
     ::-webkit-scrollbar { width: 8px; height: 8px; }
     ::-webkit-scrollbar-track { background: #090d16; }
     ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #374151; }
 
-    /* Custom animations & effects */
     .glow-cyan { box-shadow: 0 0 20px -5px rgba(6, 182, 212, 0.3); }
     .glow-emerald { box-shadow: 0 0 20px -5px rgba(34, 197, 94, 0.3); }
     .glow-violet { box-shadow: 0 0 20px -5px rgba(139, 92, 246, 0.3); }
@@ -63,7 +59,6 @@
     .toast-enter { transform: translateY(100%); opacity: 0; }
     .toast-show { transform: translateY(0); opacity: 1; }
 
-    /* Slide presentation mode full screen CSS */
     body.presentation-mode {
       overflow: hidden;
     }
@@ -78,7 +73,6 @@
 </head>
 <body class="bg-dark-bg text-slate-100 font-sans antialiased min-h-screen flex flex-col selection:bg-brand-500 selection:text-black">
 
-  <!-- TOP NAVIGATION HEADER -->
   <header class="sticky top-0 z-40 bg-dark-card/90 backdrop-blur-md border-b border-dark-border px-4 lg:px-6 py-3 flex items-center justify-between">
     <div class="flex items-center gap-3">
       <button id="mobile-menu-btn" class="lg:hidden text-slate-400 hover:text-white p-2 rounded-lg bg-dark-hover" aria-label="Toggle Navigation">
@@ -97,21 +91,17 @@
       </div>
     </div>
 
-    <!-- Search & Header Actions -->
     <div class="flex items-center gap-3" id="header-actions">
-      <!-- Quick Search Bar -->
       <div class="relative hidden md:block w-64">
         <i class="fa-solid fa-magnifying-glass absolute left-3 top-1/2 -translate-y-1/2 text-slate-500 text-sm"></i>
         <input type="text" id="global-search" placeholder="Search commands or modules..." class="w-full bg-dark-bg border border-dark-border rounded-lg pl-9 pr-4 py-1.5 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-brand-500 transition">
       </div>
 
-      <!-- Presentation Slide Mode Toggle -->
       <button id="toggle-slide-mode" class="flex items-center gap-2 bg-gradient-to-r from-brand-600 to-emerald-500 hover:from-brand-500 hover:to-emerald-400 text-slate-950 font-bold px-3.5 py-1.5 rounded-lg text-xs transition shadow-md">
         <i class="fa-solid fa-expand"></i>
         <span class="hidden sm:inline">Slide Deck Mode</span>
       </button>
 
-      <!-- Presenter Badge -->
       <div class="hidden xl:flex items-center gap-2 bg-dark-hover border border-dark-border px-3 py-1.5 rounded-lg text-xs">
         <span class="w-2 h-2 rounded-full bg-brand-500 animate-pulse"></span>
         <span class="text-slate-300 font-medium">Presenter: Saturday Session</span>
@@ -121,7 +111,6 @@
 
   <div class="flex-1 flex overflow-hidden">
     
-    <!-- SIDEBAR NAVIGATION -->
     <aside id="sidebar" class="fixed lg:static inset-y-0 left-0 z-30 w-64 bg-dark-card border-r border-dark-border flex flex-col justify-between transform -translate-x-full lg:translate-x-0 transition-transform duration-200 ease-in-out">
       <div class="p-4 space-y-1 overflow-y-auto max-h-[calc(100vh-120px)]">
         <p class="text-[10px] font-bold tracking-wider text-slate-500 uppercase px-3 mb-2">Modules Overview</p>
@@ -167,7 +156,6 @@
         </a>
       </div>
 
-      <!-- Workshop Progress Widget -->
       <div class="p-4 border-t border-dark-border bg-dark-bg/50">
         <div class="flex items-center justify-between text-xs mb-1.5">
           <span class="text-slate-400 font-medium">Workshop Mastery</span>
@@ -179,10 +167,8 @@
       </div>
     </aside>
 
-    <!-- MAIN CONTENT AREA -->
     <main id="main-content" class="flex-1 overflow-y-auto p-4 lg:p-8 space-y-12">
 
-      <!-- MODULE 00: OVERVIEW & QUICK STATS -->
       <section id="overview" class="space-y-6">
         <div class="bg-gradient-to-r from-slate-900 via-dark-card to-slate-900 border border-dark-border rounded-2xl p-6 lg:p-8 relative overflow-hidden shadow-xl">
           <div class="absolute -right-10 -bottom-10 opacity-10 pointer-events-none">
@@ -216,7 +202,6 @@
           </div>
         </div>
 
-        <!-- Quick Jump Cards -->
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
           <a href="#prerequisites" class="bg-dark-card hover:bg-dark-hover border border-dark-border p-4 rounded-xl transition group">
             <div class="flex items-center justify-between mb-2">
@@ -256,7 +241,6 @@
         </div>
       </section>
 
-      <!-- MODULE 01: PREREQUISITES & SETUP -->
       <section id="prerequisites" class="space-y-6 pt-6 border-t border-dark-border">
         <div class="flex items-center justify-between">
           <div>
@@ -272,7 +256,6 @@
         </div>
 
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          <!-- OS Git Installation -->
           <div class="bg-dark-card border border-dark-border rounded-xl p-5 space-y-4">
             <div class="flex items-center gap-3">
               <div class="w-8 h-8 rounded-lg bg-accent-cyan/10 text-accent-cyan flex items-center justify-center font-bold">1</div>
@@ -280,7 +263,7 @@
             </div>
             
             <div class="space-y-3">
-              <!-- Windows -->
+
               <div class="bg-dark-bg p-3 rounded-lg border border-dark-border text-xs">
                 <div class="flex items-center justify-between text-slate-400 mb-1">
                   <span class="font-semibold text-slate-300"><i class="fa-brands fa-windows text-blue-400 mr-1"></i> Windows</span>
@@ -289,7 +272,7 @@
                 <code class="font-mono text-emerald-400 block break-all">winget install --id Git.Git -e --source winget</code>
               </div>
 
-              <!-- macOS -->
+
               <div class="bg-dark-bg p-3 rounded-lg border border-dark-border text-xs">
                 <div class="flex items-center justify-between text-slate-400 mb-1">
                   <span class="font-semibold text-slate-300"><i class="fa-brands fa-apple text-slate-200 mr-1"></i> macOS</span>
@@ -298,7 +281,7 @@
                 <code class="font-mono text-emerald-400 block">brew install git</code>
               </div>
 
-              <!-- Linux -->
+
               <div class="bg-dark-bg p-3 rounded-lg border border-dark-border text-xs">
                 <div class="flex items-center justify-between text-slate-400 mb-1">
                   <span class="font-semibold text-slate-300"><i class="fa-brands fa-linux text-amber-400 mr-1"></i> Linux (Debian/Ubuntu)</span>
@@ -309,7 +292,7 @@
             </div>
           </div>
 
-          <!-- GitHub Profile & Authentication -->
+
           <div class="bg-dark-card border border-dark-border rounded-xl p-5 space-y-4">
             <div class="flex items-center gap-3">
               <div class="w-8 h-8 rounded-lg bg-accent-violet/10 text-accent-violet flex items-center justify-center font-bold">2</div>
@@ -332,7 +315,7 @@
             </ul>
           </div>
 
-          <!-- Configure Identity -->
+
           <div class="bg-dark-card border border-dark-border rounded-xl p-5 space-y-4">
             <div class="flex items-center gap-3">
               <div class="w-8 h-8 rounded-lg bg-brand-500/10 text-brand-500 flex items-center justify-center font-bold">3</div>
@@ -357,7 +340,7 @@
         </div>
       </section>
 
-      <!-- MODULE 02: THE 3 STATES OF GIT VISUALIZER -->
+
       <section id="git-states" class="space-y-6 pt-6 border-t border-dark-border">
         <div class="flex items-center justify-between">
           <div>
@@ -376,7 +359,7 @@
           Git maintains three main sections locally. Use the visualizer below to see how files transition through staging to saved snapshot commits.
         </p>
 
-        <!-- Interactive Visualizer Widget -->
+
         <div class="bg-dark-card border border-dark-border rounded-2xl p-6 space-y-6">
           <!-- Visual Pipeline Grid -->
           <div class="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
@@ -397,7 +380,7 @@
               </div>
             </div>
 
-            <!-- Staging Area -->
+
             <div id="state-staging" class="bg-dark-bg border-2 border-slate-700 rounded-xl p-5 space-y-3 transition-all duration-300">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-bold px-2.5 py-1 rounded bg-amber-500/10 text-amber-400">2. Staging (Index)</span>
@@ -411,7 +394,7 @@
               </div>
             </div>
 
-            <!-- Local Repository -->
+
             <div id="state-repo" class="bg-dark-bg border-2 border-slate-700 rounded-xl p-5 space-y-3 transition-all duration-300">
               <div class="flex items-center justify-between">
                 <span class="text-xs font-bold px-2.5 py-1 rounded bg-brand-500/10 text-brand-400">3. Local .git Repo</span>
@@ -426,7 +409,7 @@
             </div>
           </div>
 
-          <!-- Action Controls for Visualizer -->
+
           <div class="flex flex-wrap items-center justify-between gap-4 pt-4 border-t border-dark-border">
             <div class="flex items-center gap-3">
               <button id="btn-add-file" class="bg-amber-500/20 hover:bg-amber-500/30 text-amber-300 border border-amber-500/40 text-xs font-bold px-4 py-2 rounded-lg transition flex items-center gap-2">
@@ -444,7 +427,7 @@
         </div>
       </section>
 
-      <!-- MODULE 03: CORE TERMINAL CHEAT SHEET -->
+
       <section id="cheat-sheet" class="space-y-6 pt-6 border-t border-dark-border">
         <div class="flex items-center justify-between">
           <div>
@@ -460,7 +443,7 @@
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          <!-- Command Card 1 -->
+
           <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-brand-400 font-mono">git init</span>
@@ -470,7 +453,7 @@
             <p class="text-xs text-slate-400">Creates a new blank `.git` tracking directory in the current folder.</p>
           </div>
 
-          <!-- Command Card 2 -->
+
           <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-brand-400 font-mono">git status</span>
@@ -480,7 +463,7 @@
             <p class="text-xs text-slate-400">Displays untracked, modified, or staged files awaiting commit.</p>
           </div>
 
-          <!-- Command Card 3 -->
+
           <div class="bg-dark-card border border-dark-border p-4 rounded-xl space-y-2">
             <div class="flex items-center justify-between">
               <span class="text-xs font-bold text-brand-400 font-mono">git add .</span>
@@ -640,7 +623,7 @@
           </div>
         </div>
 
-        <!-- Pull Request Best Practices Callout -->
+
         <div class="bg-dark-card border border-dark-border rounded-xl p-5 space-y-3">
           <h3 class="font-bold text-white text-sm flex items-center gap-2">
             <i class="fa-solid fa-lightbulb text-amber-400"></i> Pro PR Tip: Linking GitHub Issues
@@ -651,7 +634,7 @@
         </div>
       </section>
 
-      <!-- MODULE 06: FINDING ISSUES & ETIQUETTE -->
+
       <section id="community-rules" class="space-y-6 pt-6 border-t border-dark-border">
         <div class="flex items-center justify-between">
           <div>
@@ -693,7 +676,7 @@
         </div>
       </section>
 
-      <!-- MODULE 07: INTERACTIVE TERMINAL SIMULATOR -->
+
       <section id="sandbox" class="space-y-6 pt-6 border-t border-dark-border pb-12">
         <div class="flex items-center justify-between">
           <div>
@@ -712,9 +695,9 @@
           Practice typing live Git commands below! Try typing <code class="text-brand-400 font-mono">git init</code>, <code class="text-brand-400 font-mono">git status</code>, <code class="text-brand-400 font-mono">git add .</code>, <code class="text-brand-400 font-mono">git commit -m "feat: my change"</code>, or <code class="text-brand-400 font-mono">help</code>.
         </p>
 
-        <!-- Terminal Window Mockup -->
+
         <div class="bg-dark-bg border border-dark-border rounded-2xl overflow-hidden shadow-2xl font-mono text-xs">
-          <!-- Window Header -->
+
           <div class="bg-dark-card px-4 py-3 border-b border-dark-border flex items-center justify-between">
             <div class="flex items-center gap-2">
               <div class="w-3 h-3 rounded-full bg-rose-500"></div>
@@ -725,13 +708,13 @@
             <button id="clear-terminal" class="text-slate-500 hover:text-white text-xs"><i class="fa-solid fa-trash-can mr-1"></i> Clear</button>
           </div>
 
-          <!-- Terminal Screen Body -->
+
           <div id="terminal-body" class="p-4 h-64 overflow-y-auto space-y-2 text-slate-300 leading-relaxed">
             <div class="text-slate-500">Welcome to Git Terminal Simulator v1.0.0</div>
             <div class="text-slate-500">Type <span class="text-brand-400">help</span> to view available commands.</div>
           </div>
 
-          <!-- Terminal Input Prompt -->
+
           <form id="terminal-form" class="bg-dark-card/50 border-t border-dark-border px-4 py-2.5 flex items-center gap-2">
             <span class="text-brand-500 font-bold">$</span>
             <input type="text" id="terminal-input" placeholder="Type git command here..." autocomplete="off" class="flex-1 bg-transparent text-slate-100 focus:outline-none font-mono text-xs">
@@ -743,17 +726,17 @@
     </main>
   </div>
 
-  <!-- TOAST NOTIFICATION CONTAINER -->
+
   <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
   <script>
     document.addEventListener('DOMContentLoaded', () => {
       
-      // --- STATE MANAGERS & LOCALSTORAGE ---
+
       const TASKS_KEY = 'git_workshop_tasks';
       let taskState = JSON.parse(localStorage.getItem(TASKS_KEY)) || {};
 
-      // Initialize Checkboxes State
+
       const updateProgress = () => {
         const checkboxes = document.querySelectorAll('.module-checkbox');
         let checkedCount = 0;
@@ -785,7 +768,7 @@
 
       updateProgress();
 
-      // --- TOAST MESSAGING ---
+
       function showToast(message) {
         const container = document.getElementById('toast-container');
         const toast = document.createElement('div');
@@ -800,12 +783,12 @@
         }, 2500);
       }
 
-      // --- CLIPBOARD COPY FUNCTIONALITY ---
+
       document.querySelectorAll('.copy-btn').forEach(btn => {
         btn.addEventListener('click', () => {
           const textToCopy = btn.getAttribute('data-copy');
           
-          // Fallback execCommand for iframe safety
+
           const tempTextArea = document.createElement('textarea');
           tempTextArea.value = textToCopy;
           document.body.appendChild(tempTextArea);
@@ -817,7 +800,7 @@
         });
       });
 
-      // --- MOBILE SIDEBAR TOGGLE ---
+
       const mobileBtn = document.getElementById('mobile-menu-btn');
       const sidebar = document.getElementById('sidebar');
 
@@ -825,7 +808,7 @@
         sidebar.classList.toggle('-translate-x-full');
       });
 
-      // Close sidebar on link click (mobile)
+
       document.querySelectorAll('.nav-link').forEach(link => {
         link.addEventListener('click', () => {
           if (window.innerWidth < 1024) {
@@ -834,7 +817,7 @@
         });
       });
 
-      // --- PRESENTATION / SLIDE DECK MODE ---
+
       const slideBtn = document.getElementById('toggle-slide-mode');
       let isSlideMode = false;
 
@@ -850,7 +833,7 @@
         }
       });
 
-      // --- MODULE 02: VISUALIZER DEMO LOGIC ---
+
       let visualizerState = 'working'; // 'working', 'staged', 'committed'
       const btnAdd = document.getElementById('btn-add-file');
       const btnCommit = document.getElementById('btn-commit-file');
@@ -914,7 +897,7 @@
         showToast('Reset Demo Visualizer.');
       });
 
-      // --- MODULE 07: INTERACTIVE TERMINAL SIMULATOR LOGIC ---
+
       const terminalForm = document.getElementById('terminal-form');
       const terminalInput = document.getElementById('terminal-input');
       const terminalBody = document.getElementById('terminal-body');
@@ -1041,7 +1024,7 @@
         terminalBody.innerHTML = '';
       });
 
-      // --- GLOBAL SEARCH FILTERING ---
+
       const searchInput = document.getElementById('global-search');
       searchInput.addEventListener('input', (e) => {
         const query = e.target.value.toLowerCase();
